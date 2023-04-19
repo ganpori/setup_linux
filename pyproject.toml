@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "setup-linux"
+version = "0.1.0"
+description = ""
+authors = ["TaikiIwahori <hmyrwjj@yahoo.co.jp>"]
+readme = "README.md"
+packages = [{include = "setup_linux"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+ansible = "^7.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
