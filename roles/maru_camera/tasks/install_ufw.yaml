@@ -1,0 +1,20 @@
+---
+- name: Install ufw
+  ansible.builtin.apt:
+    name: ufw
+    state: present
+    update_cache: no
+  become: true
+
+- name: Limit SSH in UFW
+  ufw:
+    rule: limit # limitにすると「30秒に6回の接続があったらブロック」されるらしい
+    port: "22" # port:22のtcp通信だけlimit付きで許可しておく
+    proto: tcp
+  become: True
+
+- name: Set firewall default policy as reject
+  ufw:
+    policy: reject # defaultですべての通信を遮断する
+    state: enabled # 実際にファイアーウォールを起動する。これ以降ufw発動。バリア。
+  become: true

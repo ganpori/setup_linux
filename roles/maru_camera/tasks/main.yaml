@@ -4,3 +4,6 @@
     name: chrony
     state: present
   become: true
+
+- name: Setup network security
+  import_tasks: install_ufw.yaml
