@@ -1,0 +1,4 @@
+# 公式のインベントリのチュートリアルhttps://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
+all:
+  hosts:
+    hiyodori: # hiyodoriへの接続方法は~/.ssh/config内に記載
