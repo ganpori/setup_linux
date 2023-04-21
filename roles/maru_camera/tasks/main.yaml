@@ -6,4 +6,4 @@
   become: true
 
 - name: Setup network security
-  import_tasks: install_ufw.yaml
+  ansible.builtin.import_tasks: install_ufw.yaml
