@@ -7,3 +7,10 @@
 
 - name: Setup network security
   ansible.builtin.import_tasks: install_ufw.yaml
+
+# 公式のソフトウェアチュートリアル
+# https://www.raspberrypi.com/documentation/computers/camera_software.html
+# bullseyeからはカメラモジュール接続したら自動で認識してくれるみたい
+# - name: Activate camera(raspi-configからcameraをenableにする)
+#   ansible.builtin.command: raspi-config nonint do_camera 0
+#   become: true
