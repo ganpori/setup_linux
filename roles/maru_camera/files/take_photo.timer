@@ -1,0 +1,14 @@
+[Unit]
+Description= automate taking photo
+
+[Timer]
+OnBootSec=1min
+OnCalendar=*:0/2:00
+Unit=take_photo.service
+AccuracySec=100ms
+
+[Install]
+WantedBy=multi-user.target
+
+
+

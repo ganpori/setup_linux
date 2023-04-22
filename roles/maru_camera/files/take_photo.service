@@ -1,0 +1,21 @@
+[Unit]
+After=autologin@tty1.service
+Description = automate taking photo
+
+[Service]
+Type=simple
+WorkingDirectory=/var/tmp/
+ExecStart=/usr/bin/libcamera-still -o test_service.jpg
+Restart=no
+User=taikirq
+# https://qiita.com/JhonnyBravo/items/a28074c20fa9adf02be3
+# https://www.souichi.club/technology/systemd/
+# リンクが切れていたら man systemd.serviceの原文を参照
+# 1分起動し続けてたらtimeout。
+# 1時間起動または終了処理を続けてたらtimeout。
+RuntimeMaxSec=1min 0sec
+TimeoutSec=60min 0sec
+
+
+[Install]
+WantedBy=multi-user.target

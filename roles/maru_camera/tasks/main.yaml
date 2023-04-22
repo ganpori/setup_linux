@@ -14,3 +14,22 @@
 # - name: Activate camera(raspi-configからcameraをenableにする)
 #   ansible.builtin.command: raspi-config nonint do_camera 0
 #   become: true
+
+- name: Put service files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system
+    force: true
+    mode: '755'
+  become: true
+  loop:
+    - take_photo.service
+    - take_photo.timer
+
+- name: Enable service files
+  ansible.builtin.systemd:
+    name: take_photo.timer
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  become: true
