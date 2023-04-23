@@ -1,5 +1,5 @@
 ---
 - name: Setup maru_camera raspi at hiyodori
-  hosts: hiyodori
+  hosts: all
   roles:
     - maru_camera
