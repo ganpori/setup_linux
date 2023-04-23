@@ -5,7 +5,8 @@ Description = automate taking photo
 [Service]
 Type=simple
 WorkingDirectory=/var/tmp/
-ExecStart=/usr/bin/libcamera-still -o test_service.jpg
+# --datetimeをつけるとシステムの時刻を使ってMMDDhhmmss.jpgのファイルを作る
+ExecStart=/usr/bin/libcamera-still --datetime
 Restart=no
 User=taikirq
 # https://qiita.com/JhonnyBravo/items/a28074c20fa9adf02be3
