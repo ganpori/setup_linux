@@ -6,12 +6,15 @@
     update_cache: false
   become: true
 
-- name: Limit SSH in UFW
+- name: Limit SSH and VNC in UFW
   community.general.ufw:
     rule: limit # limitにすると「30秒に6回の接続があったらブロック」されるらしい
-    port: "22" # port:22のtcp通信だけlimit付きで許可しておく
+    port: "{{ item }}" # port:22のtcp通信だけlimit付きで許可しておく
     proto: tcp
   become: true
+  loop:
+    - 22
+    - 5900
 
 - name: Set firewall default policy as reject
   community.general.ufw:
