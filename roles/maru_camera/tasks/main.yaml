@@ -8,6 +8,16 @@
 - name: Setup network security
   ansible.builtin.import_tasks: install_ufw.yaml
 
+- name: Install unattended-upgrades
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop:
+    - unattended-upgrades  # 自動アップデートするやつ
+    - apt-listchanges  # unattended-upgradesの公式ページで推奨されてた差分管理ツール
+
+
 # 公式のソフトウェアチュートリアル
 # https://www.raspberrypi.com/documentation/computers/camera_software.html
 # bullseyeからはカメラモジュール接続したら自動で認識してくれるみたい
