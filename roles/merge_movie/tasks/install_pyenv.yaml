@@ -1,6 +1,7 @@
 ---
+# pyenvのインストール方法の公式ページ
 - name: Add pyenv path to .bashrc # pathの追加の仕方はpyenvのバージョンごとに少し変わっていくので注意。この書き方はすでに古いがとりあえず動く。
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: ~/.bashrc
     line: "{{ item }}"
     state: present
@@ -9,7 +10,7 @@
     - export PATH="$PYENV_ROOT/bin:$PATH"
 
 - name: Add pyenv path to .profile # ansibleからpyenvへのpathがなかったのでとりあえず.profileにも書いておく。どこに書くべきかよくわからず。
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: ~/.profile
     line: "{{ item }}"
     state: present
@@ -18,18 +19,17 @@
     - export PATH="$PYENV_ROOT/bin:$PATH"
 
 - name: Install gcc and make for build python
-  apt: # pyenvでpython3.9をbuildするためにコンパイラ導入
+  ansible.builtin.apt: # pyenvでpython3.9をbuildするためにコンパイラ導入
     name: "{{ item }}"
     state: present
   loop:
     - gcc
     - make
-  become: yes
-  become_method: sudo
+  become: true
 
   # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
 - name: Install libs suggested by pyenv
-  apt: # pyenvでpython3.9をbuildするためにコンパイラ導入
+  ansible.builtin.apt: # pyenvでpython3.9をbuildするためにコンパイラ導入
     name: "{{ item }}"
     state: present
   loop:
@@ -49,15 +49,16 @@
     - libxmlsec1-dev
     - libffi-dev
     - liblzma-dev
-  become: yes
+  become: true
 
-- name: check pyenv is installed
-  stat:
+- name: Check pyenv is installed
+  ansible.builtin.stat:
     path: ~/.pyenv/bin/pyenv
   register: result_pyenv
 
 - name: Fetch pyenv repository(ネットつながってないととってこれない。install済みなら実行しない)
-  git:
+  ansible.builtin.git:
     repo: https://github.com/pyenv/pyenv.git
     dest: ~/.pyenv
+    version: v2.3.20
   when: not result_pyenv.stat.exists # ネット接続していないスタンドアロンPCでもアップデート可能にするためこうした。
