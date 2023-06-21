@@ -2,4 +2,3 @@
 all:
   hosts:
     hiyodori: # hiyodoriへの接続方法は~/.ssh/config内に記載
-    raspi-4b:
