@@ -9,3 +9,15 @@
   ansible.builtin.git:
     repo: https://github.com/ganpori/merge_movie.git
     dest: ~/merge_movie
+
+- name: Install python3.11 for merge_movie by pyenv
+  ansible.builtin.command:
+    cmd: "~/.pyenv/bin/pyenv install 3.11.4  --skip-existing" # 環境変数読み込むのが大変なので直接pyenvのパス指定する
+
+- name: create .venv by poetry(ネットつながってないと失敗する)
+  ansible.builtin.command:
+    cmd: "{{ item }}"
+    chdir: ~/merge_movie
+  loop:
+    - ~/.local/bin/poetry env use ~/.pyenv/versions/3.11.4/bin/python3.11
+    - ~/.local/bin/poetry install
