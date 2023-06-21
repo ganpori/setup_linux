@@ -1,9 +1,9 @@
 ---
-- name: Install pyenv
-  ansible.builtin.import_tasks: install_pyenv.yaml
+# - name: Install pyenv
+#   ansible.builtin.import_tasks: install_pyenv.yaml
 
-- name: Install poetry
-  ansible.builtin.import_tasks: install_poetry.yaml
+# - name: Install poetry
+#   ansible.builtin.import_tasks: install_poetry.yaml
 
 - name: Clone merge_movie
   ansible.builtin.git:
@@ -20,4 +20,4 @@
     chdir: ~/merge_movie
   loop:
     - ~/.local/bin/poetry env use ~/.pyenv/versions/3.11.4/bin/python3.11
-    - ~/.local/bin/poetry install
+    - ~/.local/bin/poetry install # BIUG:初回はkeyringのgui プロンプトが出てきてうまく進まなくなる。vnc使って手動でプロンプトすすめるようにする
