@@ -2,4 +2,5 @@
 - name: Setup maru_camera raspi at hiyodori
   hosts: all
   roles:
+    - merge_movie
     - maru_camera

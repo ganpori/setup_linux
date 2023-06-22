@@ -1,0 +1,38 @@
+---
+- name: Install venv
+  ansible.builtin.apt: # python3.8-venvからpython3-venvに変更　linux内のpythonに合わせたvenvをインストールするようになる
+    name: python3-venv # poetryインストール時にdebian系ではaptでvenvインストールしろと指示されたから。
+    state: present
+  become: true
+
+- name: Add poetry path to .bashrc
+  ansible.builtin.lineinfile:
+    dest: ~/.bashrc
+    line: export PATH="$HOME/.local/bin:$PATH"
+    state: present
+
+- name: Add poetry path to .profile # ansibleからpoetryへのpathがなかったのでとりあえず.profileにも書いておく。どこに書くべきかよくわからず。
+  ansible.builtin.lineinfile:
+    dest: ~/.profile
+    line: export PATH="$HOME/.local/bin:$PATH"
+    state: present
+
+- name: Is poetry already installed
+  ansible.builtin.stat:
+    path: ~/.local/bin/poetry
+  register: stat_poetry
+
+- name: Put install-poetry.py
+  ansible.builtin.get_url:
+    url: https://install.python-poetry.org
+    dest: /tmp/install-poetry.py # /tmpにインストール用スクリプトを置く。/tmpに置いとけば勝手に削除される。
+    force: true
+    mode: "777"
+  when: not stat_poetry.stat.exists
+
+- name: Install poetry
+  ansible.builtin.command: "{{ item }}"
+  loop:
+    - python3 /tmp/install-poetry.py -y  --version 1.5.1
+    - ~/.local/bin/poetry config virtualenvs.in-project true
+  when: not stat_poetry.stat.exists

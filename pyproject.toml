@@ -8,7 +8,7 @@ packages = [{include = "setup_linux"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-ansible = "^7.4.0"
+ansible = "^8.0.0"
 ansible-lint = { version = "*", markers = "platform_system != 'Windows'" }
 
 
