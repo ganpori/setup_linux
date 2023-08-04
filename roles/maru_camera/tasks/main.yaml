@@ -17,7 +17,12 @@
     - unattended-upgrades # 自動アップデートするやつ
     - apt-listchanges # unattended-upgradesの公式ページで推奨されてた差分管理ツール
 
-- name: Edit config unattended-upgrades # ansibleからpoetryへのpathがなかったのでとりあえず.profileにも書いておく。どこに書くべきかよくわからず。
+
+# raspi用の設定参考
+# https://forums.raspberrypi.com/viewtopic.php?t=255901
+# https://raspberrypi.stackexchange.com/questions/38931/how-do-i-set-my-raspberry-pi-to-automatically-update-upgrade#comment130516_38990
+# https://qiita.com/Fendo181/items/659f306232f55fc5a8de
+- name: Edit config unattended-upgrades
   ansible.builtin.blockinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
     block: |
