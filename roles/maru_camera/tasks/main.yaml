@@ -14,9 +14,23 @@
     state: present
   become: true
   loop:
-    - unattended-upgrades  # 自動アップデートするやつ
-    - apt-listchanges  # unattended-upgradesの公式ページで推奨されてた差分管理ツール
+    - unattended-upgrades # 自動アップデートするやつ
+    - apt-listchanges # unattended-upgradesの公式ページで推奨されてた差分管理ツール
 
+
+# raspi用の設定参考
+# https://forums.raspberrypi.com/viewtopic.php?t=255901
+# https://raspberrypi.stackexchange.com/questions/38931/how-do-i-set-my-raspberry-pi-to-automatically-update-upgrade#comment130516_38990
+# https://qiita.com/Fendo181/items/659f306232f55fc5a8de
+- name: Edit config unattended-upgrades
+  ansible.builtin.blockinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    block: |
+          "origin=Raspbian,codename=${distro_codename},label=Raspbian";
+          "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation";
+    insertbefore: '^.*"origin=Debian,codename=\${distro_codename},label=Debian";.*'  # ^ は文頭、.は任意の文字、*は繰り返し、\は$をエスケープ。$は文末を表す
+    state: present
+  become: true
 
 # 公式のソフトウェアチュートリアル
 # https://www.raspberrypi.com/documentation/computers/camera_software.html
@@ -24,8 +38,6 @@
 # - name: Activate camera(raspi-configからcameraをenableにする)
 #   ansible.builtin.command: raspi-config nonint do_camera 0
 #   become: true
-
-
 # raspi-configの説明:https://www.raspberrypi.com/documentation/computers/configuration.html
 - name: Activate VNC server
   ansible.builtin.command: raspi-config nonint do_vnc 0
@@ -39,7 +51,7 @@
     src: "{{ item }}"
     dest: /etc/systemd/system
     force: true
-    mode: '755'
+    mode: "755"
   become: true
   loop:
     - take_photo.service
