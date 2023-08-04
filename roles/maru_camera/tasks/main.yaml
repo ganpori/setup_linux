@@ -17,6 +17,15 @@
     - unattended-upgrades  # 自動アップデートするやつ
     - apt-listchanges  # unattended-upgradesの公式ページで推奨されてた差分管理ツール
 
+- name: Edit config unattended-upgrades # ansibleからpoetryへのpathがなかったのでとりあえず.profileにも書いておく。どこに書くべきかよくわからず。
+  ansible.builtin.blockinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    block: |
+          "origin=Raspbian,codename=${distro_codename},label=Raspbian";
+          "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation";
+    insertbefore: '^.*"origin=Debian,codename=\${distro_codename},label=Debian";.*'  # ^ は文頭、.は任意の文字、*は繰り返し、\は$をエスケープ。$は文末を表す
+    state: present
+  become: true
 
 # 公式のソフトウェアチュートリアル
 # https://www.raspberrypi.com/documentation/computers/camera_software.html
