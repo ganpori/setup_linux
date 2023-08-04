@@ -14,8 +14,8 @@
     state: present
   become: true
   loop:
-    - unattended-upgrades  # 自動アップデートするやつ
-    - apt-listchanges  # unattended-upgradesの公式ページで推奨されてた差分管理ツール
+    - unattended-upgrades # 自動アップデートするやつ
+    - apt-listchanges # unattended-upgradesの公式ページで推奨されてた差分管理ツール
 
 - name: Edit config unattended-upgrades # ansibleからpoetryへのpathがなかったのでとりあえず.profileにも書いておく。どこに書くべきかよくわからず。
   ansible.builtin.blockinfile:
@@ -33,8 +33,6 @@
 # - name: Activate camera(raspi-configからcameraをenableにする)
 #   ansible.builtin.command: raspi-config nonint do_camera 0
 #   become: true
-
-
 # raspi-configの説明:https://www.raspberrypi.com/documentation/computers/configuration.html
 - name: Activate VNC server
   ansible.builtin.command: raspi-config nonint do_vnc 0
@@ -48,7 +46,7 @@
     src: "{{ item }}"
     dest: /etc/systemd/system
     force: true
-    mode: '755'
+    mode: "755"
   become: true
   loop:
     - take_photo.service
