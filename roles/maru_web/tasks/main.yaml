@@ -3,3 +3,4 @@
   ansible.builtin.git:
     repo: https://github.com/ganpori/camera_view.git
     dest: ~/camera_view
+    version: main

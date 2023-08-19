@@ -9,6 +9,7 @@
   ansible.builtin.git:
     repo: https://github.com/ganpori/merge_movie.git
     dest: ~/merge_movie
+    version: main
 
 - name: Install python3.11 for merge_movie by pyenv
   ansible.builtin.command:
