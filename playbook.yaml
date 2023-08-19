@@ -4,3 +4,4 @@
   roles:
     - merge_movie
     - maru_camera
+    - maru_web
