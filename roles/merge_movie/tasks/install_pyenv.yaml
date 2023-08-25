@@ -51,14 +51,8 @@
     - liblzma-dev
   become: true
 
-- name: Check pyenv is installed
-  ansible.builtin.stat:
-    path: ~/.pyenv/bin/pyenv
-  register: result_pyenv
-
 - name: Fetch pyenv repository(ネットつながってないととってこれない。install済みなら実行しない)
   ansible.builtin.git:
     repo: https://github.com/pyenv/pyenv.git
     dest: ~/.pyenv
-    version: v2.3.20
-  when: not result_pyenv.stat.exists # ネット接続していないスタンドアロンPCでもアップデート可能にするためこうした。
+    version: master
