@@ -1,0 +1,20 @@
+---
+- name: Clone camera_view
+  ansible.builtin.git:
+    repo: https://github.com/ganpori/camera_view.git
+    dest: ~/camera_view
+    version: main
+
+# pyenvによるpythonのバージョンとかpoetryのインストール済みかとかの依存関係があるけどとりあえず気にしない。
+# 上記のインストールはmerge_movieロールの中で実施してる。
+# cmdの返り値に対する挙動決めろっていうwarning出てるけど気にしない。
+# https://ansible.readthedocs.io/projects/lint/rules/no-changed-when/#correct-code
+- name: Create .venv by poetry
+  ansible.builtin.command:
+    cmd: "{{ item }}"
+    chdir: ~/camera_view # ワーキングディレクトリ変えなければいけないの注意
+  loop:
+    - ~/.local/bin/poetry env use ~/.pyenv/versions/3.11.4/bin/python3.11
+    - ~/.local/bin/poetry install
+      # BUG:初回はkeyringのgui プロンプトが出てきてうまく進まなくなる。vnc使って手動でプロンプトすすめるようにする
+# このあとwebをアプリ動かすためにdbの初期化とtorchのモデルを配置しなければならない。それは自動化しない。やり方は~/camera_view/README.mdを参照。

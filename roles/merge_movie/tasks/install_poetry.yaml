@@ -33,6 +33,6 @@
 - name: Install poetry
   ansible.builtin.command: "{{ item }}"
   loop:
-    - python3 /tmp/install-poetry.py -y  --version 1.5.1
+    - python3 /tmp/install-poetry.py -y  --version 1.6.1
     - ~/.local/bin/poetry config virtualenvs.in-project true
   when: not stat_poetry.stat.exists
