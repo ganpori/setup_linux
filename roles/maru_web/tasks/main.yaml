@@ -18,3 +18,8 @@
     - ~/.local/bin/poetry install
       # BUG:初回はkeyringのgui プロンプトが出てきてうまく進まなくなる。vnc使って手動でプロンプトすすめるようにする
 # このあとwebをアプリ動かすためにdbの初期化とtorchのモデルを配置しなければならない。それは自動化しない。やり方は~/camera_view/README.mdを参照。
+
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx
+  become: true
