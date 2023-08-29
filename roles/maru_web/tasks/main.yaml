@@ -39,3 +39,11 @@
     force: true
     mode: "644"
   become: true
+
+- name: Enable maru_web nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  become: true
