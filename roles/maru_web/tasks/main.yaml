@@ -1,8 +1,8 @@
 ---
-- name: Clone camera_view
+- name: Clone maru_web
   ansible.builtin.git:
-    repo: https://github.com/ganpori/camera_view.git
-    dest: ~/camera_view
+    repo: https://github.com/ganpori/maru_web.git
+    dest: ~/maru_web
     version: main
 
 # pyenvによるpythonのバージョンとかpoetryのインストール済みかとかの依存関係があるけどとりあえず気にしない。
@@ -12,12 +12,12 @@
 - name: Create .venv by poetry
   ansible.builtin.command:
     cmd: "{{ item }}"
-    chdir: ~/camera_view # ワーキングディレクトリ変えなければいけないの注意
+    chdir: ~/maru_web # ワーキン グディレクトリ変えなければいけないの注意
   loop:
     - ~/.local/bin/poetry env use ~/.pyenv/versions/3.11.4/bin/python3.11
     - ~/.local/bin/poetry install
-      # BUG:初回はkeyringのgui プロンプトが出てきてうまく進まなくなる。vnc使って手動でプロンプトすすめるようにする
-# このあとwebをアプリ動かすためにdbの初期化とtorchのモデルを配置しなければならない。それは自動化しない。やり方は~/camera_view/README.mdを参照。
+  # BUG:初回はkeyringのgui プロンプトが出てきてうまく進まなくなる。vnc使って手動でプロンプトすすめるようにする
+  # このあとwebをアプリ動かすためにdbの初期化とtorchのモデルを配置しなければならない。それは自動化しない。やり方はmaru_web/README.mdを参照。
 
 - name: Install nginx
   ansible.builtin.apt:
