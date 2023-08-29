@@ -31,3 +31,11 @@
     path: /etc/nginx/sites-enabled/default
     state: absent
   become: true
+
+- name: Put maru_web.conf
+  ansible.builtin.copy:
+    src: maru_web.conf
+    dest: /etc/nginx/conf.d
+    force: true
+    mode: "644"
+  become: true
