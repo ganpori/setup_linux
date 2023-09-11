@@ -17,7 +17,6 @@
     - unattended-upgrades # 自動アップデートするやつ
     - apt-listchanges # unattended-upgradesの公式ページで推奨されてた差分管理ツール
 
-
 # raspi用の設定参考
 # https://forums.raspberrypi.com/viewtopic.php?t=255901
 # https://raspberrypi.stackexchange.com/questions/38931/how-do-i-set-my-raspberry-pi-to-automatically-update-upgrade#comment130516_38990
@@ -46,7 +45,15 @@
   # raspi-configの返り値で動作を判断。0ならとにかく実行はできている。操作の結果どうなったかについてはわからない。
   # 実行が失敗してたら0以外になってる。その時はansibleの実行が止まる
 
-- name: Put service files
+- name: Put take_phote.sh
+  ansible.builtin.copy:
+    src: take_photo.sh
+    dest: /usr/local/src/
+    force: true
+    mode: "755"
+  become: true
+
+- name: Put take_phote service files
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: /etc/systemd/system
