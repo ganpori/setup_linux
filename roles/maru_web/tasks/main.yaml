@@ -40,10 +40,21 @@
     mode: "644"
   become: true
 
-- name: Enable maru_web nginx
+- name: Put gunicorn.service
+  ansible.builtin.copy:
+    src: gunicorn.service
+    dest: /etc/systemd/system
+    force: true
+    mode: "755"
+  become: true
+
+- name: Enable maru_web nginx and gunicorn
   ansible.builtin.systemd:
-    name: nginx
+    name: "{{ item }}"
     state: restarted
     enabled: true
     daemon_reload: true
   become: true
+  loop:
+    - nginx
+    - gunicorn.service
