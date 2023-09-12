@@ -25,9 +25,9 @@
   ansible.builtin.blockinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
     block: |
-          "origin=Raspbian,codename=${distro_codename},label=Raspbian";
-          "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation";
-    insertbefore: '^.*"origin=Debian,codename=\${distro_codename},label=Debian";.*'  # ^ は文頭、.は任意の文字、*は繰り返し、\は$をエスケープ。$は文末を表す
+      "origin=Raspbian,codename=${distro_codename},label=Raspbian";
+      "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation";
+    insertbefore: '^.*"origin=Debian,codename=\${distro_codename},label=Debian";.*' # ^ は文頭、.は任意の文字、*は繰り返し、\は$をエスケープ。$は文末を表す
     state: present
   become: true
 
@@ -40,6 +40,17 @@
 # raspi-configの説明:https://www.raspberrypi.com/documentation/computers/configuration.html
 - name: Activate VNC server
   ansible.builtin.command: raspi-config nonint do_vnc 0
+  become: true
+  changed_when: false # 常にnot changed判定
+  # raspi-configの返り値で動作を判断。0ならとにかく実行はできている。操作の結果どうなったかについてはわからない。
+  # 実行が失敗してたら0以外になってる。その時はansibleの実行が止まる
+
+# https://www.raspberrypi.com/documentation/computers/config_txt.html#video-options
+# sudo raspi-config nonint do_resolution <group> <mode>
+# groupはDMT(=2)でmodeは720p(=85)
+# VNCでの解像度が低くて扱いずらいから固定しておく
+- name: Set hdmi resolution
+  ansible.builtin.command: sudo raspi-config nonint do_resolution 2 85
   become: true
   changed_when: false # 常にnot changed判定
   # raspi-configの返り値で動作を判断。0ならとにかく実行はできている。操作の結果どうなったかについてはわからない。
