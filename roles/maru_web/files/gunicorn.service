@@ -1,0 +1,14 @@
+[Unit]
+After=autologin@tty1.service
+Description = auto gunicorn
+
+[Service]
+Type=simple
+WorkingDirectory=/home/taikirq/maru_web
+ExecStart=/home/taikirq/.local/bin/poetry run  .venv/bin/gunicorn  apps.app:app_for_gunicorn
+Restart=always
+RestartSec=3s
+User=taikirq
+
+[Install]
+WantedBy=multi-user.target
