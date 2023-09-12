@@ -3,7 +3,7 @@ Description= automate taking photo
 
 [Timer]
 OnBootSec=1min
-OnCalendar=*:0/2:00
+OnCalendar=*:0/1:00
 Unit=take_photo.service
 AccuracySec=100ms
 
