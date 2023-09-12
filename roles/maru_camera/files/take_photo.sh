@@ -3,7 +3,13 @@
 datetime=`date '+%Y%m%d%H%M%S'`  # ファイル名に使う撮影時刻文字列
 degree_rotation=180  # カメラが反転してるから。0か180しか指定できないらしい
 savedirname='camera_images'
+exposure_seconds=10  # 最大露光時間は112秒, https://www.raspberrypi.com/documentation/accessories/camera.html#hardware-specification
+exposure_microseconds=$((exposure_seconds * 10**6))  # libcameraでの露光時間の単位はμ秒なので単位変換。
+
 
 mkdir $savedirname # 保存先を作成
 
- /usr/bin/libcamera-still -o $savedirname/${datetime}_auto.jpg  --rotation $degree_rotation
+# ソフトの説明。
+# https://www.raspberrypi.com/documentation/computers/camera_software.html
+/usr/bin/libcamera-still -o $savedirname/${datetime}_auto.jpg  --rotation $degree_rotation
+/usr/bin/libcamera-still -o $savedirname/${datetime}_long_exposure.jpg   --rotation $degree_rotation --shutter $exposure_microseconds --immediate
