@@ -5,9 +5,7 @@ Description = automate taking photo
 [Service]
 Type=simple
 WorkingDirectory=/tmp/
-# --datetimeをつけるとシステムの時刻を使ってMMDDhhmmss.jpgのファイルを作る
-ExecStart=/usr/bin/libcamera-still --datetime  --rotation 180
-# --rotation 180 はその時のカメラの設置位置しだい。０か180しかだめらしい。
+ExecStart=/usr/bin/bash  /usr/local/src/take_photo.sh
 Restart=no
 User=taikirq
 # https://qiita.com/JhonnyBravo/items/a28074c20fa9adf02be3
