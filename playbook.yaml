@@ -4,6 +4,7 @@
 - name: Setup maru_camera raspi at hiyodori
   hosts: all
   roles:
+    - raspi_default
     - merge_movie
     - maru_camera
     - maru_web
@@ -11,4 +12,5 @@
 - name: Setup merge_movie raspi
   hosts: movie
   roles:
+    - raspi_default
     - merge_movie
