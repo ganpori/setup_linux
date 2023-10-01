@@ -2,3 +2,7 @@
 all:
   hosts:
     hiyodori: # hiyodoriへの接続方法は~/.ssh/config内に記載
+
+movie:
+  hosts:
+    movie: # merge_movieだけを実行するraspi。接続方法は~/.ssh/config内に記載

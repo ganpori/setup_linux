@@ -1,7 +1,14 @@
 ---
+# playbookの説明。https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
+# roleの説明。https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
 - name: Setup maru_camera raspi at hiyodori
   hosts: all
   roles:
     - merge_movie
     - maru_camera
     - maru_web
+
+- name: Setup merge_movie raspi
+  hosts: movie
+  roles:
+    - merge_movie
