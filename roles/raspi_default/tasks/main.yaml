@@ -4,3 +4,60 @@
 
 - name: Install poetry
   ansible.builtin.import_tasks: install_poetry.yaml
+
+- name: Install chrony
+  ansible.builtin.apt:
+    name: chrony
+    state: present
+  become: true
+
+- name: Setup network security
+  ansible.builtin.import_tasks: install_ufw.yaml
+
+- name: Install unattended-upgrades
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  become: true
+  loop:
+    - unattended-upgrades # 自動アップデートするやつ
+    - apt-listchanges # unattended-upgradesの公式ページで推奨されてた差分管理ツール
+
+# raspi用の設定参考
+# https://forums.raspberrypi.com/viewtopic.php?t=255901
+# https://raspberrypi.stackexchange.com/questions/38931/how-do-i-set-my-raspberry-pi-to-automatically-update-upgrade#comment130516_38990
+# https://qiita.com/Fendo181/items/659f306232f55fc5a8de
+- name: Edit config unattended-upgrades
+  ansible.builtin.blockinfile:
+    path: /etc/apt/apt.conf.d/50unattended-upgrades
+    block: |
+      "origin=Raspbian,codename=${distro_codename},label=Raspbian";
+      "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation";
+    insertbefore: '^.*"origin=Debian,codename=\${distro_codename},label=Debian";.*' # ^ は文頭、.は任意の文字、*は繰り返し、\は$をエスケープ。$は文末を表す
+    state: present
+  become: true
+
+# 公式のソフトウェアチュートリアル
+# https://www.raspberrypi.com/documentation/computers/camera_software.html
+# bullseyeからはカメラモジュール接続したら自動で認識してくれるみたい
+# - name: Activate camera(raspi-configからcameraをenableにする)
+#   ansible.builtin.command: raspi-config nonint do_camera 0
+#   become: true
+# raspi-configの説明:https://www.raspberrypi.com/documentation/computers/configuration.html
+- name: Activate VNC server
+  ansible.builtin.command: raspi-config nonint do_vnc 0
+  become: true
+  changed_when: false # 常にnot changed判定
+  # raspi-configの返り値で動作を判断。0ならとにかく実行はできている。操作の結果どうなったかについてはわからない。
+  # 実行が失敗してたら0以外になってる。その時はansibleの実行が止まる
+
+# https://www.raspberrypi.com/documentation/computers/config_txt.html#video-options
+# sudo raspi-config nonint do_resolution <group> <mode>
+# groupはDMT(=2)でmodeは720p(=85)
+# VNCでの解像度が低くて扱いずらいから固定しておく
+- name: Set hdmi resolution
+  ansible.builtin.command: sudo raspi-config nonint do_resolution 2 85
+  become: true
+  changed_when: false # 常にnot changed判定
+  # raspi-configの返り値で動作を判断。0ならとにかく実行はできている。操作の結果どうなったかについてはわからない。
+  # 実行が失敗してたら0以外になってる。その時はansibleの実行が止まる
