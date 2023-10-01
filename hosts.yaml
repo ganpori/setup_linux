@@ -1,8 +1,9 @@
 # 公式のインベントリのチュートリアルhttps://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
-maru_web_and_camera_raspi:
-  hosts:
-    hiyodori: # hiyodoriへの接続方法は~/.ssh/config内に記載
-
-movie_raspi:
-  hosts:
-    movie: # merge_movieだけを実行するraspi。接続方法は~/.ssh/config内に記載
+raspi: # 2つのグループがラズパイグループの中にある
+  children:
+    maru_web_and_camera_raspi:
+      hosts:
+        hiyodori: # hiyodoriへの接続方法は~/.ssh/config内に記載
+    movie_raspi:
+      hosts:
+        movie: # merge_movieだけを実行するraspi。接続方法は~/.ssh/config内に記載
