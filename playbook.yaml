@@ -5,7 +5,6 @@
   hosts: maru_web_and_camera_raspi
   roles:
     - raspi_default
-    - merge_movie
     - maru_camera
     - maru_web
 
