@@ -53,10 +53,10 @@
 
 # https://www.raspberrypi.com/documentation/computers/config_txt.html#video-options
 # sudo raspi-config nonint do_resolution <group> <mode>
-# groupはDMT(=2)でmodeは720p(=85)
-# VNCでの解像度が低くて扱いずらいから固定しておく
+# groupはDMT(=2)でmodeは1080p(=82)
+# VNCでの解像度が低い&merge_movieのブラウジングの時扱いずらいから固定しておく
 - name: Set hdmi resolution
-  ansible.builtin.command: sudo raspi-config nonint do_resolution 2 85
+  ansible.builtin.command: sudo raspi-config nonint do_resolution 2 82
   become: true
   changed_when: false # 常にnot changed判定
   # raspi-configの返り値で動作を判断。0ならとにかく実行はできている。操作の結果どうなったかについてはわからない。
