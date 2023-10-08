@@ -1,7 +1,18 @@
 ---
-- name: Setup maru_camera raspi at hiyodori
-  hosts: all
+# playbookの説明。https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
+# roleの説明。https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
+- name: Default raspi setting
+  hosts: raspi
   roles:
-    - merge_movie
+    - raspi_default
+
+- name: Setup maru_camera raspi at hiyodori
+  hosts: maru_web_and_camera_raspi
+  roles:
     - maru_camera
     - maru_web
+
+- name: Setup merge_movie raspi
+  hosts: movie_raspi
+  roles:
+    - merge_movie

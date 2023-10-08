@@ -1,10 +1,4 @@
 ---
-- name: Install pyenv
-  ansible.builtin.import_tasks: install_pyenv.yaml
-
-- name: Install poetry
-  ansible.builtin.import_tasks: install_poetry.yaml
-
 - name: Clone merge_movie
   ansible.builtin.git:
     repo: https://github.com/ganpori/merge_movie.git
