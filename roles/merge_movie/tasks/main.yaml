@@ -5,16 +5,17 @@
     dest: ~/merge_movie
     version: master
 
+# pyenvとpoetryはraspi_defaultのロールでインストール済みと想定
 - name: Install python3.11 for merge_movie by pyenv
   ansible.builtin.command:
-    cmd: "~/.pyenv/bin/pyenv install 3.11.4  --skip-existing" # 環境変数読み込むのが大変なので直接pyenvのパス指定する
+    cmd: "~/.pyenv/bin/pyenv install 3.11.6  --skip-existing" # 環境変数読み込むのが大変なので直接pyenvのパス指定する
 
 - name: Create .venv by poetry
   ansible.builtin.command:
     cmd: "{{ item }}"
     chdir: ~/merge_movie
   loop:
-    - ~/.local/bin/poetry env use ~/.pyenv/versions/3.11.4/bin/python3.11
+    - ~/.local/bin/poetry env use ~/.pyenv/versions/3.11.6/bin/python3.11
     - ~/.local/bin/poetry install # BUG:初回はkeyringのgui プロンプトが出てきてうまく進まなくなる。vnc使って手動でプロンプトすすめるようにする
     # よくわからんけど空欄でcontinueすれば次に進める
 

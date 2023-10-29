@@ -5,8 +5,11 @@
     dest: ~/maru_web
     version: main
 
-# pyenvによるpythonのバージョンとかpoetryのインストール済みかとかの依存関係があるけどとりあえず気にしない。
-# 上記のインストールはmerge_movieロールの中で実施してる。
+# pyenvとpoetryはraspi_defaultのロールでインストール済みと想定
+- name: Install python3.11 for merge_movie by pyenv
+  ansible.builtin.command:
+    cmd: "~/.pyenv/bin/pyenv install 3.11.6  --skip-existing" # 環境変数読み込むのが大変なので直接pyenvのパス指定する
+
 # cmdの返り値に対する挙動決めろっていうwarning出てるけど気にしない。
 # https://ansible.readthedocs.io/projects/lint/rules/no-changed-when/#correct-code
 - name: Create .venv by poetry
@@ -14,7 +17,7 @@
     cmd: "{{ item }}"
     chdir: ~/maru_web # ワーキン グディレクトリ変えなければいけないの注意
   loop:
-    - ~/.local/bin/poetry env use ~/.pyenv/versions/3.11.4/bin/python3.11
+    - ~/.local/bin/poetry env use ~/.pyenv/versions/3.11.6/bin/python3.11
     - ~/.local/bin/poetry install
   # BUG:初回はkeyringのgui プロンプトが出てきてうまく進まなくなる。vnc使って手動でプロンプトすすめるようにする
   # このあとwebをアプリ動かすためにdbの初期化とtorchのモデルを配置しなければならない。それは自動化しない。やり方はmaru_web/README.mdを参照。

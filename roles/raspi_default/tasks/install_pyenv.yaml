@@ -51,7 +51,7 @@
     - liblzma-dev
   become: true
 
-- name: Fetch pyenv repository(ネットつながってないととってこれない。install済みなら実行しない)
+- name: Fetch pyenv repository
   ansible.builtin.git:
     repo: https://github.com/pyenv/pyenv.git
     dest: ~/.pyenv
