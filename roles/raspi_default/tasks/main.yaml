@@ -67,6 +67,12 @@
 # https://gist.github.com/jauderho/6b7d42030e264a135450ecc0ba521bd8
 # githubのコードをそのまま実行してみる。このコードは更新されてく＆gitリポジトリではないのでそのコードを残しておく
 # 使ったコード./roles/raspi_default/files/gistfile1.txt
+# ちなみに下記の変更が加えられたせいでアップグレードは結構手間らしい
+# - raspberrypi-kernelからDebianベースのカーネルパッケージ（linux-image-rpi-*）に切り替えられました
+# - raspberrypi-bootloaderからDebianベースのファームウェアパッケージ（raspi-firmware）に切り替えられました
+# - /bootマウントポイントが/boot/firmwareに移動しました
+# https://forums.raspberrypi.com/viewtopic.php?t=323279 busterからbullseyeはこれでいけるらしい。だいたいfull-upgradeでいけるとかなんとか
+# bookwormの初期設定と日本語化　https://yagiful.com/blog/raspi-bookworm-perfect-guide/
 - name: Edit config unattended-upgrades
   ansible.builtin.blockinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
