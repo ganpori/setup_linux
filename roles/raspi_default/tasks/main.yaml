@@ -72,7 +72,6 @@
 # - raspberrypi-bootloaderからDebianベースのファームウェアパッケージ（raspi-firmware）に切り替えられました
 # - /bootマウントポイントが/boot/firmwareに移動しました
 # https://forums.raspberrypi.com/viewtopic.php?t=323279 busterからbullseyeはこれでいけるらしい。だいたいfull-upgradeでいけるとかなんとか
-# bookwormの初期設定と日本語化　https://yagiful.com/blog/raspi-bookworm-perfect-guide/
 - name: Edit config unattended-upgrades
   ansible.builtin.blockinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
@@ -107,3 +106,15 @@
   changed_when: false # 常にnot changed判定
   # raspi-configの返り値で動作を判断。0ならとにかく実行はできている。操作の結果どうなったかについてはわからない。
   # 実行が失敗してたら0以外になってる。その時はansibleの実行が止まる
+
+# bookwormの初期設定と日本語化　https://yagiful.com/blog/raspi-bookworm-perfect-guide/
+- name: 日本語入力のフレームワーク？のインストール
+  ansible.builtin.apt:
+    name: fcitx5-mozc
+    state: present
+  become: true
+
+- name: 日本語入力(IME)の設定
+  ansible.builtin.command: im-config -n fcitx5
+  changed_when: false
+  # todo まだちゃんと日本語入力できないのでいつか何とかする
