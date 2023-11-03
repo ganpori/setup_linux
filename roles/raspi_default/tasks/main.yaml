@@ -27,6 +27,46 @@
 # https://forums.raspberrypi.com/viewtopic.php?t=255901
 # https://raspberrypi.stackexchange.com/questions/38931/how-do-i-set-my-raspberry-pi-to-automatically-update-upgrade#comment130516_38990
 # https://qiita.com/Fendo181/items/659f306232f55fc5a8de
+
+# 普通のaptの設定は/etc/apt内にある。そのうちのsources.listでdebianのbullseyeリポジトリからとってくる。
+# debianのだけだとパッケージは不十分でraspi専用のものをsources.list.d/raspi.listでraspiリポジトリのbullseyeをとってくる
+# 上記二つの設定は直接bullseyeとか指定されてる。unattended-upgradesだと${distro_codename}で指定されてる。
+# unattended-upgradesの設定は50unattended-upgradesなどで、事前にdebianは指定されているけどraspioのリポジトリが指定されていないのでblockinfileで追加。
+# /etc/apt/apt.conf.d/20auto-upgradesでは自動でのupdate、upgradeの設定をする
+# https://qiita.com/ymbk990/items/cabfc383e1c5e35eb4f9がunattended-upgradesの概要説明
+# apt-daily.timerとapt-daily-upgrade.timerがsystemctlから起動される自動デーモン,それぞれupdateとupgrade,/lib/systemd/system/にサービスファイルがある
+# どちらのサービスも中身は/usr/lib/apt/apt.systemd.dailyを install or updateの引数付きで実行している
+#
+# distro_codenameはどこで設定されているの？に対する説明は下記
+# https://minipc.just4fun.biz/?Pi/%E7%92%B0%E5%A2%83/Raspbian%E3%81%AE%E8%87%AA%E5%8B%95%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88%E8%A8%AD%E5%AE%9A%E6%89%8B%E9%A0%86
+# /usr/bin/unattended-upgradeというpythonの実行ファイル確認すればわかるっぽい
+# こちらが該当箇所
+# DISTRO_CODENAME = subprocess.check_output(
+#     ["lsb_release", "-c", "-s"], universal_newlines=True).strip()  # type: str
+# DISTRO_DESC = subprocess.check_output(
+#     ["lsb_release", "-d", "-s"], universal_newlines=True).strip()  # type: str
+# DISTRO_ID = subprocess.check_output(
+#     ["lsb_release", "-i", "-s"], universal_newlines=True).strip()  # type: str
+
+# /usr/bin/lsb_release　-c -sが使われててこれはraspiだとbullseye。
+# ではこのbullseyeはどこからとってきてるか？
+# /usr/bin/lsb_releaseもpythonファイルっぽいのでこれを読み解くと
+# /usr/lib/os-releaseからcodenameとか取得してるっぽい。その中身は
+# PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
+# NAME="Debian GNU/Linux"
+# VERSION_ID="11"
+# VERSION="11 (bullseye)"
+# VERSION_CODENAME=bullseye
+# ID=debian
+# HOME_URL="https://www.debian.org/"
+# SUPPORT_URL="https://www.debian.org/support"
+# BUG_REPORT_URL="https://bugs.debian.org/"
+
+# ともあれ手動でbullseye->bookwormのアップグレードやってみる。参考サイトは下記
+# https://yagiful.com/blog/raspberry-bookworm-upgrade/
+# https://gist.github.com/jauderho/6b7d42030e264a135450ecc0ba521bd8
+# githubのコードをそのまま実行してみる。このコードは更新されてく＆gitリポジトリではないのでそのコードを残しておく
+# 使ったコード./roles/raspi_default/files/gistfile1.txt
 - name: Edit config unattended-upgrades
   ansible.builtin.blockinfile:
     path: /etc/apt/apt.conf.d/50unattended-upgrades
