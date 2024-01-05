@@ -1,6 +1,10 @@
 ---
 # playbookの説明。https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 # roleの説明。https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
+- name: Setting debian python env
+  hosts: linux_python
+  roles: debian_python_env
+
 - name: Default raspi setting
   hosts: raspi
   roles:
