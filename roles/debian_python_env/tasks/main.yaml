@@ -1,4 +1,10 @@
 ---
+- name: Install git for fetch pyenv
+  ansible.builtin.apt:
+    name: git
+    state: present
+  become: true
+
 - name: Install pyenv
   ansible.builtin.import_tasks: install_pyenv.yaml
 
