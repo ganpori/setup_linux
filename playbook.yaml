@@ -6,11 +6,15 @@
   roles:
     - raspi_default
 
+- name: Setup maruweb at gcp
+  hosts: gcp_maruweb
+  roles:
+    - maru_web
+
 - name: Setup maru_camera raspi at hiyodori
-  hosts: maru_web_and_camera_raspi
+  hosts: maru_camera_raspi
   roles:
     - maru_camera
-    - maru_web
 
 - name: Setup merge_movie raspi
   hosts: movie_raspi
