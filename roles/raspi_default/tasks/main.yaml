@@ -1,10 +1,4 @@
 ---
-- name: Install pyenv
-  ansible.builtin.import_tasks: install_pyenv.yaml
-
-- name: Install poetry
-  ansible.builtin.import_tasks: install_poetry.yaml
-
 - name: Install chrony
   ansible.builtin.apt:
     name: chrony
