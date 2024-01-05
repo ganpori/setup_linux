@@ -17,22 +17,15 @@
     line: export PATH="$HOME/.local/bin:$PATH"
     state: present
 
-- name: Is poetry already installed
-  ansible.builtin.stat:
-    path: ~/.local/bin/poetry
-  register: stat_poetry
-
 - name: Put install-poetry.py
   ansible.builtin.get_url:
     url: https://install.python-poetry.org
     dest: /tmp/install-poetry.py # /tmpにインストール用スクリプトを置く。/tmpに置いとけば勝手に削除される。
     force: true
     mode: "777"
-  when: not stat_poetry.stat.exists
 
 - name: Install poetry
   ansible.builtin.command: "{{ item }}"
   loop:
-    - python3 /tmp/install-poetry.py -y  --version 1.6.1
+    - python3 /tmp/install-poetry.py -y  --version 1.7.1
     - ~/.local/bin/poetry config virtualenvs.in-project true
-  when: not stat_poetry.stat.exists

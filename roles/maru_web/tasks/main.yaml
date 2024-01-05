@@ -1,4 +1,9 @@
 ---
+- name: Install libgl1-mesa-dev to use open-cv
+  ansible.builtin.apt:
+    name: libgl1-mesa-dev
+  become: true
+
 - name: Clone maru_web
   ansible.builtin.git:
     repo: https://github.com/ganpori/maru_web.git

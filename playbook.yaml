@@ -1,16 +1,26 @@
 ---
 # playbookの説明。https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 # roleの説明。https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
+
+- name: Setting debian python env
+  hosts: linux_python
+  roles:
+    - debian_python_env
+
 - name: Default raspi setting
   hosts: raspi
   roles:
     - raspi_default
 
+- name: Setup maruweb at gcp
+  hosts: gcp_maruweb
+  roles:
+    - maru_web
+
 - name: Setup maru_camera raspi at hiyodori
-  hosts: maru_web_and_camera_raspi
+  hosts: maru_camera_raspi
   roles:
     - maru_camera
-    - maru_web
 
 - name: Setup merge_movie raspi
   hosts: movie_raspi
