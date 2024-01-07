@@ -11,6 +11,7 @@ mkdir $savedirname # 保存先を作成
 
 # ソフトの説明。
 # https://www.raspberrypi.com/documentation/computers/camera_software.html
-/usr/bin/libcamera-still -o $savedirname/${datetime}_auto.jpg  --rotation $degree_rotation --immediate
+/usr/bin/libcamera-still -o $savedirname/${datetime}_auto.jpg  --rotation $degree_rotation 
 # 非常に長時間露光の画像をキャプチャするには、AEC/AGC および AWB を無効にするように注意する必要があります。無効にしないと、これらのアルゴリズムにより、ユーザーは収束するまでに多数のフレームを待機することになります。
-/usr/bin/libcamera-still -o $savedirname/${datetime}_long_exposure.jpg   --rotation $degree_rotation --shutter $exposure_microseconds --immediate  --gain $gain_at_long_exposure --awbgains 1,1
+# 長露光では実行時オプションで--immediateをつけろって公式でいってるけど動かなくなったのでとりあえずつけない
+/usr/bin/libcamera-still -o $savedirname/${datetime}_long_exposure.jpg   --rotation $degree_rotation --shutter $exposure_microseconds  --gain $gain_at_long_exposure --awbgains 1,1
