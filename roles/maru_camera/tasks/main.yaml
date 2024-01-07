@@ -1,4 +1,15 @@
 ---
+- name: Clone push_image repo
+  ansible.builtin.git:
+    repo: https://github.com/ganpori/push_image.git
+    dest: ~/push_image
+    version: master
+
+- name: Create .venv by poetry
+  ansible.builtin.command:
+    cmd: ~/.local/bin/poetry install
+    chdir: ~/push_image # ワーキングディレクトリ変えなければいけないの注意
+
 - name: Put take_phote.sh
   ansible.builtin.copy:
     src: take_photo.sh
@@ -21,6 +32,25 @@
 - name: Enable service files
   ansible.builtin.systemd:
     name: take_photo.timer
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  become: true
+
+- name: Put push_image service files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system
+    force: true
+    mode: "755"
+  become: true
+  loop:
+    - push_image.service
+    - push_image.timer
+
+- name: Enable service files
+  ansible.builtin.systemd:
+    name: push_image.timer
     state: restarted
     enabled: true
     daemon_reload: true

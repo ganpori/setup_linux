@@ -1,0 +1,14 @@
+[Unit]
+Description= automate push image
+
+[Timer]
+OnBootSec=1min
+OnCalendar=*:0/30:00
+Unit=push_image.service
+AccuracySec=100ms
+
+[Install]
+WantedBy=multi-user.target
+
+
+
