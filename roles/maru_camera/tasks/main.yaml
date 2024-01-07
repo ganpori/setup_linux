@@ -36,3 +36,22 @@
     enabled: true
     daemon_reload: true
   become: true
+
+- name: Put push_image service files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /etc/systemd/system
+    force: true
+    mode: "755"
+  become: true
+  loop:
+    - push_image.service
+    - push_image.timer
+
+- name: Enable service files
+  ansible.builtin.systemd:
+    name: push_image.timer
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  become: true
